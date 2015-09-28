@@ -17,7 +17,7 @@ fs.readFile('index.txt', 'utf8', function(err, data){
 
   fs.readFile('words.txt', 'utf8', function(err, data){
     currentWord = data.split("\n")[index];
-    client.post('statuses/update', {status: "Steampunk " + currentWord.toLowerCase()}, function(error, tweet, response){
+    client.post('statuses/update', {status: "Steampunk " + currentWord}, function(error, tweet, response){
       if(!error){
         fs.writeFile('index.txt', index+1, 'utf8', function(err){
           if(err) throw err;
