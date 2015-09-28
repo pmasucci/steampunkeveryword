@@ -1,5 +1,4 @@
 var Twitter = require('twitter');
-
 require('dotenv').config({silent: true});
 
 var client = new Twitter({
@@ -9,9 +8,24 @@ var client = new Twitter({
   access_token_secret: process.env.tw_token_secret
 });
 
-//client.post('statuses/update', {status: "It works!"}, function(error, tweet, response){
-//  if(!error){
-//    console.log(tweet);
-//  }
-//  console.log(response);
-//});
+var fs = require('fs');
+var index;
+var currentWord;
+
+fs.readFile('index.txt', 'utf8', function(err, data){
+  index = +data.trim();
+
+  fs.readFile('words.txt', 'utf8', function(err, data){
+    currentWord = data.split("\n")[index];
+    client.post('statuses/update', {status: "Steampunk " + currentWord.toLowerCase()}, function(error, tweet, response){
+      if(!error){
+        fs.writeFile('index.txt', index+1, 'utf8', function(err){
+          if(err) throw err;
+        });
+      } else {
+        console.log(error);
+      }
+    });
+  });
+});
+
